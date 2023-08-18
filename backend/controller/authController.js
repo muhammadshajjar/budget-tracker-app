@@ -8,7 +8,9 @@ exports.signup = async (req, res, next) => {
   try {
     const oldUser = await User.findOne({ userEmail: req.body.userEmail });
     if (oldUser)
-      return res.status(400).json({ message: "Email already in used" });
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Email already in used" });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -33,9 +35,7 @@ exports.signup = async (req, res, next) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      data: {
-        message: err.message,
-      },
+      message: err.message,
     });
   }
 };
@@ -46,7 +46,9 @@ exports.login = async (req, res, next) => {
   try {
     const getUserFromDB = await User.findOne({ userEmail });
     if (!getUserFromDB) {
-      return res.status(404).json({ message: "Email doesn't exists" });
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Email doesn't exists" });
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -55,7 +57,9 @@ exports.login = async (req, res, next) => {
     );
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Invalid Credentials" });
     }
 
     const token = jwt.sign({ id: getUserFromDB._id }, process.env.JWT_SECRET, {
@@ -65,23 +69,20 @@ exports.login = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       token,
-      data: {
-        message: "Login successful",
-      },
+      message: "Login successful",
     });
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      data: {
-        message: err.message,
-      },
+      message: err.message,
     });
   }
 };
 
 exports.protect = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
     try {
       const decoded = await promisify(jwt.verify)(
         token,
@@ -92,6 +93,7 @@ exports.protect = async (req, res, next) => {
       req.userID = userID;
     } catch (err) {
       return res.status(401).json({
+        status: "fail",
         message: "Unauthenticated",
       });
     }
@@ -99,9 +101,7 @@ exports.protect = async (req, res, next) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      data: {
-        message: err.message,
-      },
+      message: err.message,
     });
   }
 };

@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please tell us your first name"],
     trim: true,
   },
-
   lastName: {
     type: String,
     required: [true, "Please tell us your last name"],

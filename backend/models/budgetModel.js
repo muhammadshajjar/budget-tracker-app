@@ -7,7 +7,6 @@ const budgetSchema = new mongoose.Schema({
     required: [true, "A Expense must have a name"],
     trim: true,
   },
-
   expensePrice: {
     type: Number,
     required: [true, "A Expense must have a price"],

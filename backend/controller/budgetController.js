@@ -3,7 +3,7 @@ const Budget = require("../models/budgetModel");
 exports.getExenses = async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
-    let query = Budget.find({ user: req.userID });
+    let query = Budget.find({ user: req.userID }); //find budgets of only authenticated person
 
     //If filter by date query available
     if (req.query.date) {
@@ -62,21 +62,27 @@ exports.deleteExpense = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 };
 
 exports.updateExpense = async (req, res) => {
   try {
-    const tour = await Budget.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedBudget = await Budget.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    console.log(updatedBudget);
     res.status(200).json({
       status: "success",
       data: {
-        tour,
+        updatedBudget,
       },
     });
   } catch (er) {
