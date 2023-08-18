@@ -83,7 +83,13 @@ exports.protect = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     try {
-      await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET
+      );
+
+      const userID = decoded.id;
+      req.userID = userID;
     } catch (err) {
       return res.status(401).json({
         message: "Unauthenticated",

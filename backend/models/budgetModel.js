@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const budgetSchema = new mongoose.Schema({
@@ -14,6 +15,10 @@ const budgetSchema = new mongoose.Schema({
   expenseDate: {
     type: String,
     required: [true, "A Expense must have a Date"],
+  },
+  user: {
+    type: ObjectId,
+    ref: "User",
   },
 });
 

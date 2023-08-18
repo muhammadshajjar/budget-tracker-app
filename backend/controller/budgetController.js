@@ -2,8 +2,8 @@ const Budget = require("../models/budgetModel");
 
 exports.getExenses = async (req, res) => {
   try {
-    const { page = 1, limit = 5 } = req.query;
-    let query = Budget.find();
+    const { page = 1, limit = 10 } = req.query;
+    let query = Budget.find({ user: req.userID });
 
     //If filter by date query available
     if (req.query.date) {
