@@ -1,0 +1,52 @@
+.card {
+  max-width: 780px;
+  width: 100%;
+  margin: 0 auto;
+}
+.card__left {
+  background-color: var(--primary-yellow);
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card__left img {
+  height: 150px;
+}
+.card__left h3 {
+  line-height: 1.5;
+  color: white;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.form {
+  padding: 50px 40px;
+}
+.form p {
+  margin-bottom: 15px;
+}
+.input {
+  padding: 10px;
+}
+
+/* library styles alteration */
+
+.ant-card-body {
+  padding: 10px !important;
+}
+
+.auth-btn {
+  width: 170px;
+}
+.auth-btn button {
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 3px !important;
+  background-color: var(--primary-yellow);
+  color: black;
+}
+.auth-btn button:hover {
+  background-color: #0a0a0aef !important;
+}

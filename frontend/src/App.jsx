@@ -1,13 +1,16 @@
-import Authentication from "../pages/authentication/Authentication";
-import Budget from "../pages/budget/Budgets";
+import Authentication from "./pages/authentication/Authentication";
+import Budget from "./pages/budget/Budgets";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./RootLayout";
-import Analytics from "../pages/analytics/Analytics";
+import Analytics from "./pages/analytics/Analytics";
 import { ConfigProvider } from "antd";
 
-import LoginFrom from "../components/LoginFrom";
-import SignupForm from "../components/SignupForm";
+import LoginFrom from "./components/LoginFrom";
+import SignupForm from "./components/SignupForm";
+import ProtectedRoutes from "./ProtectedRoutes";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
@@ -19,17 +22,31 @@ const router = createBrowserRouter([
         path: "/",
         element: <Authentication />,
         children: [
-          { index: true, element: <SignupForm /> },
-          { path: "login", element: <LoginFrom /> },
+          {
+            index: true,
+            element: <SignupForm />,
+          },
+          {
+            path: "login",
+            element: <LoginFrom />,
+          },
         ],
       },
       {
         path: "budget",
-        element: <Budget />,
+        element: (
+          <ProtectedRoutes>
+            <Budget />
+          </ProtectedRoutes>
+        ),
       },
       {
         path: "analytics",
-        element: <Analytics />,
+        element: (
+          <ProtectedRoutes>
+            <Analytics />
+          </ProtectedRoutes>
+        ),
       },
     ],
   },
@@ -45,6 +62,7 @@ function App() {
       }}
     >
       <RouterProvider router={router} />
+      <ToastContainer />
     </ConfigProvider>
   );
 }

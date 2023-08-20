@@ -1,0 +1,35 @@
+header {
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.logo img {
+  width: 50px;
+}
+.logo span {
+  font-weight: 600;
+  margin-left: 15px;
+  letter-spacing: 0.6px;
+}
+
+.profile {
+  cursor: pointer;
+}
+.active {
+  border-bottom: 3px solid var(--primary-yellow);
+}
+
+/* library styles alteration */
+
+.ant-dropdown-menu-item {
+  padding: 10px;
+}
+
+.ant-dropdown-menu-item button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+}
