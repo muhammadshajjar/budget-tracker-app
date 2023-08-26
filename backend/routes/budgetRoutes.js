@@ -6,7 +6,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(budgetController.getExenses)
+  .get(budgetController.getExpenses)
   .post(budgetController.addNewExpense);
 
 router

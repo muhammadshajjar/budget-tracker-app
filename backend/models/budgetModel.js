@@ -12,7 +12,7 @@ const budgetSchema = new mongoose.Schema({
     required: [true, "A Expense must have a price"],
   },
   expenseDate: {
-    type: String,
+    type: Date,
     required: [true, "A Expense must have a Date"],
   },
   user: {

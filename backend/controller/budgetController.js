@@ -1,15 +1,14 @@
 const Budget = require("../models/budgetModel");
+const { addDateQuery } = require("../utils/query");
 
-exports.getExenses = async (req, res) => {
+exports.getExpenses = async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
-    let query = Budget.find({ user: req.userID }); //find budgets of only authenticated person
+    let sqlQuery = {};
+    addDateQuery("expenseDate", sqlQuery, req.query);
 
-    //If filter by date query available
-    if (req.query.date) {
-      query = query.where({ expenseDate: req.query.date });
-    }
-
+    sqlQuery.user = req.userID; //find budgets of only authenticated person
+    let query = Budget.find(sqlQuery);
     //limiting and pagination
     query = query.limit(limit * 1).skip((page - 1) * limit);
 
@@ -20,10 +19,12 @@ exports.getExenses = async (req, res) => {
     }
 
     const expenses = await query;
+    const totalExpenses = await Budget.countDocuments({ user: req.userID });
 
     res.status(200).json({
       status: "success",
       data: {
+        totalExpenses,
         expenses,
       },
     });
@@ -36,8 +37,16 @@ exports.getExenses = async (req, res) => {
 };
 
 exports.addNewExpense = async (req, res) => {
+  const expenseBody = {
+    expenseName: req.body.expenseName,
+    expensePrice: req.body.expensePrice,
+    expenseDate: new Date(req.body.expenseDate),
+  };
   try {
-    const newExpense = await Budget.create(req.body);
+    const newExpense = await Budget.create({
+      ...expenseBody,
+      user: req.userID,
+    });
     res.status(201).json({
       status: "success",
       data: {
@@ -77,15 +86,13 @@ exports.updateExpense = async (req, res) => {
         runValidators: true,
       }
     );
-
-    console.log(updatedBudget);
     res.status(200).json({
       status: "success",
       data: {
         updatedBudget,
       },
     });
-  } catch (er) {
+  } catch (err) {
     res.status(400).json({
       status: "fail",
       message: "Invalid Data sent!",

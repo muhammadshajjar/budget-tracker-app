@@ -1,0 +1,26 @@
+.budgets {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+}
+.budgets__action {
+  padding-bottom: 20px;
+}
+
+.date-picker {
+  width: 200px;
+  padding: 0 10px;
+  margin-right: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(230, 230, 230);
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.modal-header svg:hover {
+  cursor: pointer;
+}

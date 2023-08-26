@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, notification } from "antd";
 
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
@@ -23,15 +23,18 @@ const LoginForm = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      toast.error(err?.response?.data?.message || "An error occurred.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+      // notification.error(err?.response?.data?.message || "An error occurred.", {
+      //   position: "top-center",
+      //   autoClose: 2000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      // });
+      notification.error({
+        message: err?.response?.data?.message || "An error occurred.",
       });
     }
   };

@@ -11,9 +11,19 @@ import { AiOutlineUser, AiOutlineDashboard } from "react-icons/ai";
 import { CiLogout } from "react-icons/ci";
 import { MdOutlineAnalytics } from "react-icons/md";
 
+import { useDispatch } from "react-redux";
+
+import { budgetApi } from "../store/services";
+
 const Header = () => {
   const { token, logout } = useContext(AuthContext);
+  const disptach = useDispatch();
 
+  const logoutHandler = () => {
+    console.log("CALLED");
+    disptach(budgetApi.util.resetApiState());
+    logout();
+  };
   const items = [
     {
       key: "1",
@@ -41,7 +51,7 @@ const Header = () => {
     },
     {
       key: "3",
-      label: <button onClick={() => logout()}>Logout</button>,
+      label: <button onClick={logoutHandler}>Logout</button>,
       icon: <CiLogout />,
     },
   ];

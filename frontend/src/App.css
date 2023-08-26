@@ -40,3 +40,26 @@ main {
   width: 96%;
   margin: 0 auto;
 }
+
+.btn {
+  border-radius: 4px;
+  height: 45px;
+  padding: 0 10px;
+}
+.primaryBtn {
+  background-color: var(--primary-yellow);
+  color: black;
+}
+
+.secondaryBtn {
+  background-color: var(--primary-black);
+  color: white;
+}
+.primaryBtn:hover {
+  background-color: var(--primary-black) !important;
+  color: white !important;
+}
+.secondaryBtn:hover {
+  background-color: var(--primary-yellow) !important;
+  color: black !important;
+}
