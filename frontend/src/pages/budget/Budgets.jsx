@@ -40,7 +40,8 @@ const Analytics = () => {
     current: 1,
     showSizeChanger: true,
   });
-  const { data, error, isLoading } = useGetAllExpenseQuery(tabelParams);
+  const { data, error, isLoading, isFetching } =
+    useGetAllExpenseQuery(tabelParams);
   const [deleteExpense, { isLoading: deleting }] = useDeleteExpenseMutation();
   const [addExpense, { isLoading: uploading }] = useAddExpenseMutation();
   const [updateExpense, { isLoading: updating }] = useUpdateExpenseMutation();
@@ -163,7 +164,7 @@ const Analytics = () => {
   };
 
   return (
-    <Card bordered={false} className="budgets">
+    <Card bordered={false} className="cards-container">
       <Row justify="space-between" className="budgets__action">
         <Col>
           <Row>
@@ -194,7 +195,7 @@ const Analytics = () => {
         columns={columns}
         pagination={tabelParams}
         onChange={tabelParamsChangeHandler}
-        loading={isLoading || deleting || uploading || updating}
+        loading={isLoading || deleting || uploading || updating || isFetching}
       />
       <Modal
         title={

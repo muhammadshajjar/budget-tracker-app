@@ -1,0 +1,14 @@
+.loader-contanier {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* antd default styles alterations */
+
+.ant-tabs-ink-bar {
+  background: var(--primary-yellow) !important;
+}
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--primary-yellow) !important;
+}

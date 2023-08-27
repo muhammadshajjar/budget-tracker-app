@@ -20,7 +20,6 @@ const Header = () => {
   const disptach = useDispatch();
 
   const logoutHandler = () => {
-    console.log("CALLED");
     disptach(budgetApi.util.resetApiState());
     logout();
   };

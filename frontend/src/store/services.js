@@ -1,8 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import moment from "moment";
 
 export const budgetApi = createApi({
   reducerPath: "budgetApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:8000/api/v1/" }),
+  refetchOnReconnect: true,
   tagTypes: ["Budgets"],
   endpoints: (builder) => ({
     getAllExpense: builder.query({
@@ -64,6 +66,29 @@ export const budgetApi = createApi({
       }),
       invalidatesTags: ["Budgets"],
     }),
+    getExpenseTrends: builder.query({
+      query: (date) => ({
+        url: `budgets?expenseDate_gt=${date}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+      transformResponse: (response) => {
+        const transformedResults = response.data.expenses.map((expense) => {
+          return {
+            price: expense.expensePrice,
+            date: moment(expense.expenseDate).format("YYYY-MM-DD"),
+          };
+        });
+        transformedResults.sort((a, b) => {
+          return moment(a.date).toDate() - moment(b.date).toDate();
+        });
+
+        return transformedResults;
+      },
+    }),
   }),
 });
 
@@ -72,4 +97,5 @@ export const {
   useAddExpenseMutation,
   useDeleteExpenseMutation,
   useUpdateExpenseMutation,
+  useGetExpenseTrendsQuery,
 } = budgetApi;

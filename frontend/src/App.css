@@ -27,9 +27,6 @@ main {
   height: calc(100vh - 70px);
   background-color: var(--light-bg);
   padding-top: 20px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 }
 
 *:focus {
@@ -40,7 +37,12 @@ main {
   width: 96%;
   margin: 0 auto;
 }
-
+.cards-container {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  min-height: 200px;
+}
 .btn {
   border-radius: 4px;
   height: 45px;
