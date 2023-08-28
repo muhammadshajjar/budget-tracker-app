@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, notification } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/auth-context";
-
-import { toast } from "react-toastify";
 
 const SIGNUPAPIURL = "http://127.0.0.1:8000/api/v1/signup";
 
@@ -27,15 +25,8 @@ const SignupForm = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      toast.error(err?.response?.data?.message || "An error occurred.", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+      notification.error({
+        message: err?.response?.data?.message || "An error occurred.",
       });
     }
   };

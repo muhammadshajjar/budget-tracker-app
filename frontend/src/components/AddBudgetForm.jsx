@@ -28,7 +28,6 @@ const AddUpdateBudgetForm = ({ onFromSubmit, onUploading, editRowData }) => {
       expensePrice: values.expensePrice,
       expenseDate: new Date(values.expenseDate),
     };
-    console.log(budgetData);
     onFromSubmit(budgetData);
   };
   return (
@@ -82,7 +81,7 @@ const AddUpdateBudgetForm = ({ onFromSubmit, onUploading, editRowData }) => {
       </Form.Item>
       <div className="auth-btn">
         <Button type="primary" htmlType="submit" loading={onUploading}>
-          Submit
+          {editRowData ? "Edit" : "Submit"}
         </Button>
       </div>
     </Form>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Analytics.css";
 
 //services
@@ -20,9 +20,15 @@ const Analytics = () => {
     date: moment().subtract(1, "months").format("YYYY-MM-DD"),
   });
 
-  const { data: trends, isFetching } = useGetExpenseTrendsQuery(
-    activeTabDate.date
-  );
+  const {
+    data: trends,
+    refetch,
+    isFetching,
+  } = useGetExpenseTrendsQuery(activeTabDate.date);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const activeTabChangeHandler = (value) => {
     const oneMonthAgo = moment().subtract(1, "months").format("YYYY-MM-DD");

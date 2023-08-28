@@ -4,7 +4,6 @@ import { Button, Form, Input, notification } from "antd";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 const LOGINAPIURL = "http://127.0.0.1:8000/api/v1/login";
 
@@ -23,16 +22,6 @@ const LoginForm = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      // notification.error(err?.response?.data?.message || "An error occurred.", {
-      //   position: "top-center",
-      //   autoClose: 2000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      // });
       notification.error({
         message: err?.response?.data?.message || "An error occurred.",
       });
@@ -78,7 +67,7 @@ const LoginForm = () => {
         </Form.Item>
         <div className="auth-btn">
           <Button type="primary" htmlType="submit" loading={isLoading}>
-            Submit
+            Login In
           </Button>
         </div>
       </Form>

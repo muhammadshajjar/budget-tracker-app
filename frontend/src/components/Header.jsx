@@ -1,19 +1,25 @@
 import { useContext } from "react";
+import { useDispatch } from "react-redux";
 import "./Header.css";
 
-import { Avatar, Row, Col, Dropdown } from "antd";
+// assets
 import logo from "../assets/logo.png";
 
+//context
 import { AuthContext } from "../context/auth-context";
 import { NavLink } from "react-router-dom";
+
+//react icons
 
 import { AiOutlineUser, AiOutlineDashboard } from "react-icons/ai";
 import { CiLogout } from "react-icons/ci";
 import { MdOutlineAnalytics } from "react-icons/md";
 
-import { useDispatch } from "react-redux";
-
+//services
 import { budgetApi } from "../store/services";
+
+//antd components
+import { Avatar, Row, Col, Dropdown } from "antd";
 
 const Header = () => {
   const { token, logout } = useContext(AuthContext);
@@ -31,7 +37,7 @@ const Header = () => {
           to="/budget"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
-          Dashboard
+          Expenses
         </NavLink>
       ),
       icon: <AiOutlineDashboard />,
