@@ -12,12 +12,12 @@ import { Line } from "@ant-design/charts";
 
 //Libraries
 
-import moment from "moment";
+import dayjs from "dayjs";
 
 const Analytics = () => {
   const [activeTabDate, setActiveTabDate] = useState({
     active: "1",
-    date: moment().subtract(1, "months").format("YYYY-MM-DD"),
+    date: dayjs().subtract(1, "month").format("YYYY-MM-DD"),
   });
 
   const {
@@ -26,16 +26,15 @@ const Analytics = () => {
     isFetching,
   } = useGetExpenseTrendsQuery(activeTabDate.date);
 
+  // WhenEver user re-enter to this route I refetch the records because It may alter budget to show new enteries
   useEffect(() => {
     refetch();
   }, []);
 
   const activeTabChangeHandler = (value) => {
-    const oneMonthAgo = moment().subtract(1, "months").format("YYYY-MM-DD");
-    const sixMonthsAgo = moment().subtract(6, "months").format("YYYY-MM-DD");
-    const twelveMonthsAgo = moment()
-      .subtract(12, "months")
-      .format("YYYY-MM-DD");
+    const oneMonthAgo = dayjs().subtract(1, "months").format("YYYY-MM-DD");
+    const sixMonthsAgo = dayjs().subtract(6, "months").format("YYYY-MM-DD");
+    const twelveMonthsAgo = dayjs().subtract(12, "months").format("YYYY-MM-DD");
 
     if (value === "1") {
       setActiveTabDate({ active: value, date: oneMonthAgo });

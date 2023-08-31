@@ -35,7 +35,7 @@ import AddUpdateBudgetForm from "../../components/AddBudgetForm";
 const Analytics = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [tabelParams, setTabelParams] = useState({
+  const [tabelParams, setTableParams] = useState({
     pageSize: 5,
     current: 1,
     showSizeChanger: true,
@@ -73,7 +73,9 @@ const Analytics = () => {
               {
                 key: "1",
                 label: (
-                  <button onClick={() => setEditRowData(record)}>Edit</button>
+                  <button onClick={editExpenseHandler.bind(null, record)}>
+                    Edit
+                  </button>
                 ),
               },
               {
@@ -96,25 +98,29 @@ const Analytics = () => {
   if (error) {
     notification.error({ message: "Something Went Wrong!" });
   }
+
+  // Dynamically updates the 'total' parameter in 'tableParams' upon receiving and changing expense data.
+
   useEffect(() => {
-    if (data && data?.totalExpenses !== undefined) {
-      setTabelParams((prevParams) => ({
+    if (data?.totalExpenses) {
+      setTableParams((prevParams) => ({
         ...prevParams,
         total: data?.totalExpenses,
       }));
     }
   }, [data]);
 
-  useEffect(() => {
-    if (editRowData) {
-      setIsModalOpen(true);
-    }
-  }, [editRowData]);
+  const tableLoading =
+    isLoading || deleting || uploading || updating || isFetching;
 
   const tabelParamsChangeHandler = (pagination) => {
-    setTabelParams(pagination);
+    setTableParams(pagination);
   };
 
+  const editExpenseHandler = (record) => {
+    setEditRowData(record);
+    setIsModalOpen(true);
+  };
   const deleteExpenseHandler = async (id) => {
     deleteExpense(id);
     notification.success({ message: "Budget Deleted Successfully!" });
@@ -128,31 +134,31 @@ const Analytics = () => {
       setSelectedDate(formatedDate);
     }
     if (!values) {
-      setTabelParams((prevParams) => {
+      setTableParams((prevParams) => {
         return { ...prevParams, expenseDate: "" };
       });
     }
   };
 
   const filterByDateHandler = () => {
-    setTabelParams((prevParams) => {
+    setTableParams((prevParams) => {
       return {
         ...prevParams,
         expenseDate: selectedDate,
       };
     });
   };
-  const addBudgetHandler = (data) => {
-    addExpense(data);
-    notification.success({ message: "Budget Added Successfully!" });
-    setIsModalOpen(false);
-  };
 
-  const editBudgetHandler = (data) => {
-    const id = editRowData._id;
-    updateExpense({ id, data });
-    notification.success({ message: "Budget Updated Successfully!" });
-    setEditRowData(null);
+  const budgetAddUpdateHandler = (data) => {
+    if (editRowData) {
+      const id = editRowData._id;
+      updateExpense({ id, data });
+      notification.success({ message: "Budget Updated Successfully!" });
+      setEditRowData(null);
+    } else {
+      addExpense(data);
+      notification.success({ message: "Budget Added Successfully!" });
+    }
     setIsModalOpen(false);
   };
   const handleCancel = () => {
@@ -195,7 +201,7 @@ const Analytics = () => {
         columns={columns}
         pagination={tabelParams}
         onChange={tabelParamsChangeHandler}
-        loading={isLoading || deleting || uploading || updating || isFetching}
+        loading={tableLoading}
       />
       <Modal
         title={
@@ -210,7 +216,7 @@ const Analytics = () => {
         closeIcon={null}
       >
         <AddUpdateBudgetForm
-          onFromSubmit={editRowData ? editBudgetHandler : addBudgetHandler}
+          onFromSubmit={budgetAddUpdateHandler}
           editRowData={editRowData}
           onUploading={uploading}
         />

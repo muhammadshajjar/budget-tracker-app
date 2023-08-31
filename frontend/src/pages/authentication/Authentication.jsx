@@ -9,11 +9,14 @@ import illustration from "../../assets/login-illustration.png";
 const Authentication = () => {
   const navigate = useNavigate();
   const { token } = useContext(AuthContext);
+
+  // should call navigate() in a useEffect(), not when your component is first rendered.
+
   useEffect(() => {
     if (token) {
       navigate("/budget");
     }
-  }, [token, navigate]);
+  }, [token]);
 
   return (
     <Card bordered={false} className="card">

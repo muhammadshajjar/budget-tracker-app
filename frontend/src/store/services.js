@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import moment from "moment";
+import dayjs from "dayjs";
 
+const getHeaders = () => ({
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${localStorage.getItem("token")}`,
+});
 export const budgetApi = createApi({
   reducerPath: "budgetApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://127.0.0.1:8000/api/v1/" }),
@@ -11,10 +15,7 @@ export const budgetApi = createApi({
       query: ({ current, pageSize, expenseDate = "" }) => ({
         url: `budgets?page=${current}&limit=${pageSize}&expenseDate=${expenseDate}`,
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getHeaders(),
       }),
       providesTags: ["Budgets"],
       transformResponse: (response) => {
@@ -35,10 +36,7 @@ export const budgetApi = createApi({
       query: (newExpense) => ({
         url: "budgets",
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getHeaders(),
         body: newExpense,
       }),
       invalidatesTags: ["Budgets"],
@@ -47,10 +45,7 @@ export const budgetApi = createApi({
       query: (id) => ({
         url: `budgets/${id}`,
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getHeaders(),
       }),
       invalidatesTags: ["Budgets"],
     }),
@@ -58,10 +53,7 @@ export const budgetApi = createApi({
       query: ({ id, data }) => ({
         url: `budgets/${id}`,
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getHeaders(),
         body: data,
       }),
       invalidatesTags: ["Budgets"],
@@ -70,20 +62,17 @@ export const budgetApi = createApi({
       query: (date) => ({
         url: `budgets?expenseDate_gt=${date}`,
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getHeaders(),
       }),
       transformResponse: (response) => {
         const transformedResults = response.data.expenses.map((expense) => {
           return {
             price: expense.expensePrice,
-            date: moment(expense.expenseDate).format("YYYY-MM-DD"),
+            date: dayjs(expense.expenseDate).format("YYYY-MM-DD"),
           };
         });
         transformedResults.sort((a, b) => {
-          return moment(a.date).toDate() - moment(b.date).toDate();
+          return dayjs(a.date).toDate() - dayjs(b.date).toDate();
         });
 
         return transformedResults;

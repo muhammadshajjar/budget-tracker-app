@@ -1,23 +1,24 @@
 import { useEffect, useRef } from "react";
 import { Button, Form, Input, DatePicker } from "antd";
-
-import moment from "moment";
+import dayjs from "dayjs";
 
 const AddUpdateBudgetForm = ({ onFromSubmit, onUploading, editRowData }) => {
   const formRef = useRef();
 
+  // Populate form fields with initial values when 'editRowData' changes,
+  // ensuring 'formRef' is defined and available to set the field values.
   useEffect(() => {
     if (editRowData) {
       formRef.current.setFieldsValue({
         expenseName: editRowData.expenseName,
         expensePrice: editRowData.expensePrice,
-        expenseDate: moment(editRowData.expenseDate, "MM/DD/YYYY"),
+        expenseDate: dayjs(new Date(editRowData.expenseDate)),
       });
     } else {
       formRef.current.setFieldsValue({
         expenseName: "",
         expensePrice: "",
-        expenseDate: moment(),
+        expenseDate: dayjs(new Date()),
       });
     }
   }, [editRowData]);
